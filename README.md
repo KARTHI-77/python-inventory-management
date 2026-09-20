@@ -394,6 +394,69 @@ The integration tests cover:
 The integration test suite currently contains **6 tests**.
 
 ---
+## 🧾 Detailed Test Case Documentation
+
+The automated test suite contains 34 test cases covering normal operations, validation
+rules, edge cases, and JSON persistence.
+
+### Unit Test Cases
+
+| # | Test Case | Purpose |
+|---:|---|---|
+| 1 | Inventory starts empty | Verifies a newly created inventory contains no products. |
+| 2 | Add product | Verifies that a valid product can be added successfully. |
+| 3 | Add multiple products | Verifies that multiple unique products can coexist. |
+| 4 | Duplicate product ID | Ensures duplicate IDs are rejected to maintain uniqueness. |
+| 5 | Negative price | Ensures products cannot have negative prices. |
+| 6 | Negative quantity | Ensures products cannot have negative stock. |
+| 7 | Empty product name | Ensures products require a valid name. |
+| 8 | Empty product ID | Ensures a product ID cannot be empty. |
+| 9 | Whitespace product ID | Ensures whitespace-only IDs are rejected. |
+| 10 | Remove product | Verifies an existing product can be removed. |
+| 11 | Remove nonexistent product | Verifies an appropriate error is raised for an unknown product. |
+| 12 | Update stock | Verifies stock quantity can be updated. |
+| 13 | Update stock to zero | Ensures zero stock is accepted as a valid quantity. |
+| 14 | Negative stock update | Ensures stock cannot be updated to a negative value. |
+| 15 | Update nonexistent product | Verifies updating an unknown product is rejected. |
+| 16 | Get nonexistent product | Verifies retrieving an unknown product is rejected. |
+| 17 | Search products | Verifies products can be searched by name. |
+| 18 | Case-insensitive search | Ensures searches work regardless of letter case. |
+| 19 | Search with no match | Verifies an empty result is returned when no product matches. |
+| 20 | Calculate inventory value | Verifies total inventory value is calculated correctly. |
+| 21 | Empty inventory value | Ensures an empty inventory has a value of zero. |
+| 22 | Low-stock products | Verifies products at or below the threshold are identified. |
+| 23 | No low-stock products | Verifies an empty result when no products are below the threshold. |
+| 24 | Negative low-stock threshold | Ensures negative thresholds are rejected. |
+| 25 | Non-numeric price | Ensures invalid price types are rejected. |
+| 26 | Non-integer quantity | Ensures invalid quantity types are rejected. |
+| 27 | Non-integer stock update | Ensures invalid stock update types are rejected. |
+| 28 | Non-integer low-stock threshold | Ensures invalid threshold types are rejected. |
+
+### Integration Test Cases
+
+| # | Test Case | Purpose |
+|---:|---|---|
+| 29 | Save and load inventory | Verifies inventory can be persisted and restored correctly. |
+| 30 | Saved inventory is valid JSON | Verifies the generated file contains valid JSON data. |
+| 31 | Missing JSON file | Ensures loading a nonexistent file raises the expected error. |
+| 32 | Malformed JSON | Ensures invalid JSON content is rejected. |
+| 33 | Invalid JSON structure | Ensures JSON with an unexpected structure is rejected. |
+| 34 | Invalid product data | Ensures invalid product information loaded from JSON is rejected. |
+
+### Why These Test Cases Were Chosen
+
+The test suite was designed to cover both the normal behavior of the inventory module
+and situations that could cause incorrect or unreliable results.
+
+Normal-operation tests verify that the core functionality works correctly. Validation
+tests verify that invalid user or product data cannot enter the system. Edge-case tests,
+such as zero stock and empty search results, verify boundary behavior. Integration tests
+verify that the JSON persistence layer works correctly with the inventory management
+logic.
+
+Together, these tests provide coverage of the module's main functionality, error
+conditions, and persistence behavior while supporting the project's Test-Driven
+Development approach.
 
 ## 🔄 Test-Driven Development (TDD)
 
