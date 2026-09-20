@@ -1,5 +1,7 @@
 # Python Inventory Management
 
+[![Python Tests](https://github.com/KARTHI-77/python-inventory-management/actions/workflows/tests.yml/badge.svg)](https://github.com/KARTHI-77/python-inventory-management/actions/workflows/tests.yml)
+
 A Python-based inventory management module developed with a strong focus on **automated testing, Test-Driven Development (TDD), input validation, code quality, and integration testing**.
 
 This project was developed as part of a Python programming internship to demonstrate practical Python development and professional software testing practices.
