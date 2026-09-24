@@ -12,6 +12,7 @@ class InventoryManager:
     def __init__(self) -> None:
         """Initialize an empty inventory."""
         self._products: dict[str, Product] = {}
+        self._total_inventory_value: float = 0.0
 
     @staticmethod
     def _validate_product_id(product_id: str) -> None:
@@ -108,6 +109,7 @@ class InventoryManager:
             "price": float(price),
             "quantity": quantity,
         }
+        self._total_inventory_value += float(price) * quantity
 
     def remove_product(self, product_id: str) -> None:
         """Remove a product from the inventory.
@@ -120,7 +122,13 @@ class InventoryManager:
         """
         if product_id not in self._products:
             raise KeyError(f"Product '{product_id}' not found")
+        
+        product = self._products[product_id]
 
+        self._total_inventory_value -= (
+            product["price"] * product["quantity"]
+        )
+  
         del self._products[product_id]
 
     def get_product(self, product_id: str) -> Product:
@@ -164,7 +172,15 @@ class InventoryManager:
             raise KeyError(f"Product '{product_id}' not found")
 
         self._validate_quantity(quantity)
-        self._products[product_id]["quantity"] = quantity
+        
+        product = self._products[product_id]
+        old_quantity = product["quantity"]
+
+        product["quantity"] = quantity
+
+        self._total_inventory_value += (
+          product["price"] * (quantity - old_quantity)
+        )
 
     def search_products(self, search_term: str) -> list[Product]:
         """Search products by name, ignoring letter case.
@@ -184,11 +200,8 @@ class InventoryManager:
         ]
 
     def calculate_inventory_value(self) -> float:
-        """Calculate the total monetary value of all inventory."""
-        return sum(
-            product["price"] * product["quantity"]
-            for product in self._products.values()
-        )
+       """Return the total monetary value of all inventory."""
+       return self._total_inventory_value
 
     def get_low_stock_products(
         self,
@@ -252,6 +265,7 @@ class InventoryManager:
             products = json.load(file)
 
         self._products = {}
+        self._total_inventory_value = 0.0
 
         for product in products:
             self.add_product(

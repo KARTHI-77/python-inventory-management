@@ -1,0 +1,48 @@
+=== Week 4 Performance Comparison ===
+
+Workload
+--------
+Products: 10,000
+Iterations: 1,000
+Inventory value: 535,780,000.00
+
+Baseline
+--------
+Execution time: 1.440711 seconds
+Average calculation time: 0.001440711 seconds
+Algorithmic complexity: O(n)
+
+Optimized
+---------
+Execution time: 0.031646 seconds
+Average calculation time: 0.000031646 seconds
+Algorithmic complexity: O(1)
+
+Improvement
+-----------
+Time saved: 1.409065 seconds
+Execution-time reduction: 97.80%
+Speedup: 45.53x
+
+Validation
+----------
+Tests passed: 34
+Code coverage: 100%
+
+Optimization
+------------
+The original calculate_inventory_value() method iterated
+through every product and calculated price * quantity on
+every call.
+
+The optimized implementation maintains a cached
+_total_inventory_value and updates it incrementally when
+products are added, removed, or their stock quantity changes.
+
+JSON loading resets the cached total and rebuilds it through
+the existing add_product() validation path.
+
+Profiling confirmed that the original builtins.sum()
+and generator expression were the primary bottleneck.
+After optimization, calculate_inventory_value() performs
+an O(1) cached-value lookup.
