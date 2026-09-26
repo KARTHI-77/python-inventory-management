@@ -249,3 +249,27 @@ class TestInventoryManager:
 
         with pytest.raises((TypeError, ValueError)):
             inventory.get_low_stock_products("five")
+
+
+def test_nan_price_is_rejected():
+    inventory = InventoryManager()
+
+    with pytest.raises(ValueError, match="finite"):
+        inventory.add_product(
+            "P001",
+            "Keyboard",
+            float("nan"),
+            10,
+        )
+
+
+def test_infinite_price_is_rejected():
+    inventory = InventoryManager()
+
+    with pytest.raises(ValueError, match="finite"):
+        inventory.add_product(
+            "P001",
+            "Keyboard",
+            float("inf"),
+            10,
+        )

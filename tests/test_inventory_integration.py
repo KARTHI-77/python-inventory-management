@@ -123,3 +123,45 @@ def test_load_invalid_product_data_is_rejected(tmp_path):
 
     with pytest.raises(ValueError, match="quantity"):
         inventory.load_from_json(file_path)
+
+def test_failed_load_does_not_modify_existing_inventory(tmp_path):
+    inventory = InventoryManager()
+
+    inventory.add_product(
+        "P001",
+        "Keyboard",
+        1200.00,
+        10,
+    )
+
+    file_path = tmp_path / "malicious_inventory.json"
+
+    file_path.write_text(
+        """
+        [
+            {
+                "id": "P002",
+                "name": "Mouse",
+                "price": 600,
+                "quantity": 5
+            },
+            {
+                "id": "P003",
+                "name": "Monitor",
+                "price": 15000,
+                "quantity": -10
+            }
+        ]
+        """,
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="quantity"):
+        inventory.load_from_json(file_path)
+
+    assert inventory.get_product("P001") == {
+        "id": "P001",
+        "name": "Keyboard",
+        "price": 1200.00,
+        "quantity": 10,
+    }

@@ -1,4 +1,5 @@
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -49,10 +50,13 @@ class InventoryManager:
 
         Raises:
             TypeError: If price is not numeric.
-            ValueError: If price is negative.
+            ValueError: If price is negative or not finite.
         """
         if not isinstance(price, (int, float)):
             raise TypeError("Product price must be numeric")
+
+        if not math.isfinite(price):
+            raise ValueError("Product price must be finite")
 
         if price < 0:
             raise ValueError("Product price cannot be negative")
@@ -264,13 +268,24 @@ class InventoryManager:
         with file_path.open("r", encoding="utf-8") as file:
             products = json.load(file)
 
-        self._products = {}
-        self._total_inventory_value = 0.0
+        # Validate the complete dataset before changing
+        # the current inventory.
+        temporary_inventory = InventoryManager()
 
         for product in products:
-            self.add_product(
+            temporary_inventory.add_product(
                 product_id=product["id"],
                 name=product["name"],
                 price=product["price"],
                 quantity=product["quantity"],
             )
+
+        # Commit only after every product has been
+        # successfully validated.
+        self._products = {
+            product_id: product.copy()
+            for product_id, product in temporary_inventory._products.items()
+        }
+        self._total_inventory_value = (
+            temporary_inventory._total_inventory_value
+        )
