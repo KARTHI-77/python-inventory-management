@@ -76,6 +76,7 @@ def test_load_missing_file_is_rejected(tmp_path):
     except FileNotFoundError:
         assert True
 
+
 def test_load_malformed_json_is_rejected(tmp_path):
     inventory = InventoryManager()
 
@@ -89,6 +90,7 @@ def test_load_malformed_json_is_rejected(tmp_path):
     with pytest.raises(json.JSONDecodeError):
         inventory.load_from_json(file_path)
 
+
 def test_load_invalid_json_structure_is_rejected(tmp_path):
     inventory = InventoryManager()
 
@@ -101,6 +103,7 @@ def test_load_invalid_json_structure_is_rejected(tmp_path):
 
     with pytest.raises((TypeError, KeyError)):
         inventory.load_from_json(file_path)
+
 
 def test_load_invalid_product_data_is_rejected(tmp_path):
     inventory = InventoryManager()
@@ -123,6 +126,7 @@ def test_load_invalid_product_data_is_rejected(tmp_path):
 
     with pytest.raises(ValueError, match="quantity"):
         inventory.load_from_json(file_path)
+
 
 def test_failed_load_does_not_modify_existing_inventory(tmp_path):
     inventory = InventoryManager()
