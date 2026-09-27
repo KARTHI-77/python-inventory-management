@@ -36,7 +36,8 @@ class InventoryManager:
             name: Name of the product.
 
         Raises:
-            ValueError: If the product name is empty or contains only whitespace.
+            ValueError: If the product name is empty or contains only
+                whitespace.
         """
         if not isinstance(name, str) or not name.strip():
             raise ValueError("Product name cannot be empty")
@@ -126,13 +127,13 @@ class InventoryManager:
         """
         if product_id not in self._products:
             raise KeyError(f"Product '{product_id}' not found")
-        
+
         product = self._products[product_id]
 
         self._total_inventory_value -= (
             product["price"] * product["quantity"]
         )
-  
+
         del self._products[product_id]
 
     def get_product(self, product_id: str) -> Product:
@@ -176,7 +177,7 @@ class InventoryManager:
             raise KeyError(f"Product '{product_id}' not found")
 
         self._validate_quantity(quantity)
-        
+
         product = self._products[product_id]
         old_quantity = product["quantity"]
 
@@ -204,8 +205,8 @@ class InventoryManager:
         ]
 
     def calculate_inventory_value(self) -> float:
-       """Return the total monetary value of all inventory."""
-       return self._total_inventory_value
+        """Return the total monetary value of all inventory."""
+        return self._total_inventory_value
 
     def get_low_stock_products(
         self,
